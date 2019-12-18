@@ -10,9 +10,9 @@ from urllib import request
 
 
 class Check_Chromedriver:
-    def __init__(self):
+    def __init__(self, path="./chromedriver/"):
         self.BASE_URL = "https://chromedriver.chromium.org/"
-        self.driver_mother_path = "./chromedriver/"
+        self.driver_mother_path = path
         self.driver_path = os.path.join(self.driver_mother_path, "chromedriver.exe")
 
     def check_driver(self):
@@ -91,5 +91,5 @@ class Check_Chromedriver:
 
 
 if __name__ == "__main__":
-    cc = Check_Chromedriver()
+    cc = Check_Chromedriver("./")
     cc.main()
