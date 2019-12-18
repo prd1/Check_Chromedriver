@@ -6,6 +6,7 @@ It is always annoying to know that your Chromedriver is expired especially when 
 I found that this happends because chrome browser updates itself automatically for its security's sake.
 
 Rather than making it not to update by itself, I made a module that checks and updates [Chromedirver](https://chromedriver.chromium.org/)'s version.
+※ It only works on Windows
 ## Install
 1. Clone the repository
 ```bash
@@ -38,6 +39,7 @@ print(isUsable)
 셀레니움을 사용하려고 할 때 기존에 받아 놓은 크롬 드라이버 버전이 만료되어있다면, 새로 다운받는 것이 여간 귀찮은 일이 아니다.
 
 이는 크롬 브라우저가 보안 등의 이유로 자동으로 브라우저 업데이트를 진행하기 때문인데, 필자는 이 보안 업데이트를 막음으로써 위 문제를 해결하기보다는, 간단한 모듈을 통해 [크롬드라이버](https://chromedriver.chromium.org/)를 자동으로 다운받게 함으로써 항상 최신 버전을 유지할 수 있도록 했다.
+※ 윈도우에서만 작동 가능
 ## 설치
 1. Repository 클론
 ```bash
