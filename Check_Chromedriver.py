@@ -74,7 +74,7 @@ class Check_Chromedriver:
             print(e)
 
     def remove_zip(self, download_path):
-        os.remove("./chromedriver/chromedriver.zip")
+        os.remove(download_path)
 
     def main(self):
         if self.check_driver():
@@ -91,5 +91,5 @@ class Check_Chromedriver:
 
 
 if __name__ == "__main__":
-    cc = Check_Chromedriver("./")
+    cc = Check_Chromedriver()
     cc.main()
