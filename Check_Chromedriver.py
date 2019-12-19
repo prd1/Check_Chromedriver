@@ -19,7 +19,7 @@ class Check_Chromedriver:
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         try:
-            driver = webdriver.Chrome(self.driver_path)
+            driver = webdriver.Chrome(self.driver_path, chrome_options=chrome_options)
             driver.quit()
             return True
         except Exception:

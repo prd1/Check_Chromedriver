@@ -1,9 +1,0 @@
-setup.cfg
-setup.py
-Check_Chromedriver/Check_Chromedriver.py
-Check_Chromedriver/__init__.py
-check_chromedriver.egg-info/PKG-INFO
-check_chromedriver.egg-info/SOURCES.txt
-check_chromedriver.egg-info/dependency_links.txt
-check_chromedriver.egg-info/requires.txt
-check_chromedriver.egg-info/top_level.txt
