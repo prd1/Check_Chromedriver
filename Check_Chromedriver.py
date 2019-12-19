@@ -5,7 +5,6 @@ from urllib import request
 
 from bs4 import BeautifulSoup
 import requests
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
@@ -19,20 +18,17 @@ class Check_Chromedriver:
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         try:
-            # driver = webdriver.Chrome(self.driver_path, chrome_options=chrome_options)
-            # driver.quit()
-            # cur_path = path.dirname(os.path.realpath(__file__))
             cur_path = os.getcwd()
-            print(cur_path)
+            # print(cur_path)
             raw_version = os.popen(
                 "{}/chromedriver/chromedriver -v".format(cur_path)
             ).read()
             version = self.parse_driver_version_from_driver(raw_version)
             read_version = self.read_version()
             if version != read_version:
-                raise
+                return False
             return True
-        except Exception as e:
+        except Exception:
             return False
 
     def parse_driver_version_from_driver(self, raw_version):
