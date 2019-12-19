@@ -2,58 +2,35 @@ import os
 import re
 import zipfile
 from urllib import request
+import platform
 
 from bs4 import BeautifulSoup
 import requests
-from selenium.webdriver.chrome.options import Options
 
 
 class Check_Chromedriver:
     def __init__(self, path="./chromedriver/"):
+        self.os_name = self.check_os()
         self.BASE_URL = "https://chromedriver.chromium.org/"
         self.driver_mother_path = path
-        self.driver_path = os.path.join(self.driver_mother_path, "chromedriver.exe")
+        temp = self.parse_download_URL()
+        self.down_url = temp[0]
+        self.new_version = temp[1]
 
-    def check_driver(self):
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        try:
-            cur_path = os.getcwd()
-            # print(cur_path)
-            raw_version = os.popen(
-                "{}/chromedriver/chromedriver -v".format(cur_path)
-            ).read()
-            version = self.parse_driver_version_from_driver(raw_version)
-            read_version = self.read_version()
-            if version != read_version:
-                return False
-            return True
-        except Exception:
-            return False
-
-    def parse_driver_version_from_driver(self, raw_version):
-        p = re.compile("ChromeDriver (.*) .*")
-        m = p.search(raw_version)
-        return m.group(1)
-
-    def make_dir(self):
-        try:
-            os.makedirs(self.driver_mother_path)
-        except OSError as e:
-            if e.errno != 17:
-                raise
+    def check_os(self):
+        return platform.system()
 
     def parse_download_URL(self):
+        if self.os_name == "Linux":
+            down_name = "chromedriver_linux64.zip"
+        else:
+            down_name = "chromedriver_win32.zip"
         base_req = self.get_to_URL(self.BASE_URL)
         base_soup = BeautifulSoup(base_req.content, "html.parser")
 
         driver_version = self.parse_driver_version(base_soup)
         download_url = "/".join(
-            [
-                "https://chromedriver.storage.googleapis.com",
-                driver_version,
-                "chromedriver_win32.zip",
-            ]
+            ["https://chromedriver.storage.googleapis.com", driver_version, down_name,]
         )
         return download_url, driver_version
 
@@ -76,6 +53,23 @@ class Check_Chromedriver:
         p = re.compile(".*path=(.*)/")
         m = p.search(href)
         return m.group(1)
+
+    def check_driver(self):
+        try:
+            cur_path = os.getcwd()
+            read_version = self.read_version()
+            if self.new_version != read_version:
+                return False
+            return True
+        except Exception:
+            return False
+
+    def make_dir(self):
+        try:
+            os.makedirs(self.driver_mother_path)
+        except OSError as e:
+            if e.errno != 17:
+                raise
 
     def unzip(self, download_path):
         try:
@@ -102,17 +96,16 @@ class Check_Chromedriver:
             return
         self.make_dir()
         parse_return = self.parse_download_URL()
-        down_url = parse_return[0]
-        latest_version = parse_return[1]
         download_path = os.path.join(self.driver_mother_path, "chromedriver.zip")
         print("Downloading...")
-        request.urlretrieve(down_url, download_path)
+        request.urlretrieve(self.down_url, download_path)
         print("Download Complete!")
         self.unzip(download_path)
         self.remove_zip(download_path)
-        self.write_version(latest_version)
+        self.write_version(self.new_version)
 
 
 if __name__ == "__main__":
     cc = Check_Chromedriver()
     cc.main()
+    # print(cc.check_os())
