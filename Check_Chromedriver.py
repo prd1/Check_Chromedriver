@@ -21,7 +21,9 @@ class Check_Chromedriver:
         try:
             # driver = webdriver.Chrome(self.driver_path, chrome_options=chrome_options)
             # driver.quit()
-            cur_path = os.path.dirname(os.path.realpath(__file__))
+            # cur_path = path.dirname(os.path.realpath(__file__))
+            cur_path = os.getcwd()
+            print(cur_path)
             raw_version = os.popen(
                 "{}/chromedriver/chromedriver -v".format(cur_path)
             ).read()
