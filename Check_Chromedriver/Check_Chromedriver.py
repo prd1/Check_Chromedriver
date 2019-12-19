@@ -1,12 +1,12 @@
 import os
 import re
 import zipfile
+from urllib import request
 
 from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from urllib import request
 
 
 class Check_Chromedriver:
