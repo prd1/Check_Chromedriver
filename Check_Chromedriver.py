@@ -19,11 +19,24 @@ class Check_Chromedriver:
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         try:
-            driver = webdriver.Chrome(self.driver_path, chrome_options=chrome_options)
-            driver.quit()
+            # driver = webdriver.Chrome(self.driver_path, chrome_options=chrome_options)
+            # driver.quit()
+            cur_path = os.path.dirname(os.path.realpath(__file__))
+            raw_version = os.popen(
+                "{}/chromedriver/chromedriver -v".format(cur_path)
+            ).read()
+            version = self.parse_driver_version_from_driver(raw_version)
+            read_version = self.read_version()
+            if version != read_version:
+                raise
             return True
-        except Exception:
+        except Exception as e:
             return False
+
+    def parse_driver_version_from_driver(self, raw_version):
+        p = re.compile("ChromeDriver (.*) .*")
+        m = p.search(raw_version)
+        return m.group(1)
 
     def make_dir(self):
         try:
@@ -44,7 +57,7 @@ class Check_Chromedriver:
                 "chromedriver_win32.zip",
             ]
         )
-        return download_url
+        return download_url, driver_version
 
     def get_to_URL(self, url):
         req = requests.get(url)
@@ -76,18 +89,30 @@ class Check_Chromedriver:
     def remove_zip(self, download_path):
         os.remove(download_path)
 
+    def write_version(self, latest_version):
+        with open(self.driver_mother_path + "/version.txt", "wt") as f:
+            f.write(latest_version)
+
+    def read_version(self):
+        with open(self.driver_mother_path + "/version.txt", "rt") as f:
+            result = f.read()
+        return result
+
     def main(self):
         if self.check_driver():
             # print chromedriver version
             return
         self.make_dir()
-        down_url = self.parse_download_URL()
+        parse_return = self.parse_download_URL()
+        down_url = parse_return[0]
+        latest_version = parse_return[1]
         download_path = os.path.join(self.driver_mother_path, "chromedriver.zip")
         print("Downloading...")
         request.urlretrieve(down_url, download_path)
         print("Download Complete!")
         self.unzip(download_path)
         self.remove_zip(download_path)
+        self.write_version(latest_version)
 
 
 if __name__ == "__main__":

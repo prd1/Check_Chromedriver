@@ -45,9 +45,9 @@ print(isUsable)
 
 ※ 윈도우에서만 작동 가능
 ## 설치
-1. Repository 클론
+1. 설치
 ```bash
-$ git clone https://github.com/cuzai/Check_Chromedriver.git
+$ pip install check-chromedriver
 ```
 2. 모듈 import
 ```python
