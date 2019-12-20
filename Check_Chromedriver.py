@@ -44,7 +44,7 @@ class Check_Chromedriver:
     def parse_driver_version(self, soup):
         # print(soup)
         li = soup.select(".sites-layout-tile.sites-tile-name-content-1 > div li")
-        href = li[1].select_one("a")["href"]
+        href = li[0].select_one("a")["href"]
         version = self.regrex_version(href)
         # https://chromedriver.storage.googleapis.com/78.0.3904.105/chromedriver_win32.zip
         return version
@@ -95,7 +95,6 @@ class Check_Chromedriver:
             # print chromedriver version
             return
         self.make_dir()
-        parse_return = self.parse_download_URL()
         download_path = os.path.join(self.driver_mother_path, "chromedriver.zip")
         print("Downloading...")
         request.urlretrieve(self.down_url, download_path)
