@@ -7,7 +7,7 @@ import platform
 from bs4 import BeautifulSoup
 import requests
 
-from libs import deal_parse, deal_reg, deal_zip
+from libs import deal_parse, deal_reg, deal_zip, deal_txt
 
 
 def check_os():
@@ -16,7 +16,7 @@ def check_os():
 
 def check_driver():
     try:
-        read_ver = read_version()
+        read_ver = deal_txt.read_version(driver_mother_path)
         if new_version != read_ver:
             return False
         return True
@@ -32,17 +32,6 @@ def make_dir():
             raise
 
 
-def write_version(latest_version):
-    with open(driver_mother_path + "/version.txt", "wt") as f:
-        f.write(latest_version)
-
-
-def read_version():
-    with open(driver_mother_path + "/version.txt", "rt") as f:
-        result = f.read()
-    return result
-
-
 def main():
     if check_driver():
         # print chromedriver version
@@ -54,7 +43,7 @@ def main():
     print("Download Complete!")
     deal_zip.unzip(download_path)
     deal_zip.remove_zip(download_path)
-    write_version(new_version)
+    deal_txt.write_version(driver_mother_path, new_version)
 
 
 os_name = check_os()
