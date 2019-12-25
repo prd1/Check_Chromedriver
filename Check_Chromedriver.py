@@ -49,6 +49,14 @@ def make_dir():
 
 
 def main():
+    driver_path = os.path.join(driver_mother_path, "chromedriver.exe")
+
+    try:
+        if not os.path.isfile(driver_path):
+            shutil.rmtree(driver_mother_path)
+    except Exception:
+        pass
+
     if compare_driver():
         # print chromedriver version
         return
@@ -66,13 +74,6 @@ def main():
 
 
 driver_mother_path = "./chromedriver/"
-driver_path = os.path.join(driver_mother_path, "chromedriver.exe")
-
-try:
-    if not os.path.isfile(driver_path) or not os.path.isfile(os.path.join(driver_mother_path, "version.txt")) :
-        shutil.rmtree(driver_mother_path)
-except Exception:
-    pass
 
 browser_ver = check_browser_ver()
 print("chromebrowser_ver : {}".format(browser_ver))
