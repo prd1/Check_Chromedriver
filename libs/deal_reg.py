@@ -34,4 +34,3 @@ def is_version(text):
         return True
     except Exception:
         pass
-

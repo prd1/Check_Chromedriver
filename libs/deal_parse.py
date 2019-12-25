@@ -1,7 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 
-from libs import deal_reg
+try : 
+    from libs import deal_reg
+except Exception :
+    from Check_Chromedriver.libs import deal_reg
+
 
 BASE_URL = "https://chromedriver.chromium.org/downloads"
 

@@ -8,7 +8,10 @@ import datetime
 from bs4 import BeautifulSoup
 import requests
 
-from libs import deal_parse, deal_reg, deal_zip, deal_txt
+try:
+    from libs import deal_parse, deal_reg, deal_zip, deal_txt
+except Exception:
+    from Check_Chromedriver.libs import deal_parse, deal_reg, deal_zip, deal_txt
 
 
 def check_os():
