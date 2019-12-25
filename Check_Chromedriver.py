@@ -19,18 +19,17 @@ def check_os():
 
 
 def compare_driver():
-    global local_ver
     try:
-        read_ver = deal_txt.read_version(driver_mother_path)
-        read_ver_code = deal_reg.reg_version_code(read_ver)
-        print("chromedriver_ver : {}".format(read_ver))
-        if read_ver_code == local_ver_code:
+        driver_ver = deal_txt.read_version(driver_mother_path)
+        driver_ver_code = deal_reg.reg_version_code(driver_ver)
+        print("chromedriver_ver : {}".format(driver_ver))
+        if driver_ver_code == browser_ver_code:
             return True
     except FileNotFoundError:
         pass
 
 
-def check_local_driver():
+def check_browser_ver():
     try:
         ver_path = "C:/Program Files (x86)/Google/Chrome/Application"
         for i in os.listdir(ver_path):
@@ -53,7 +52,7 @@ def main():
         # print chromedriver version
         return
     make_dir()
-    temp = deal_parse.parse_download_URL(local_ver_code)
+    temp = deal_parse.parse_download_URL(browser_ver_code)
     down_url = temp[0]
     new_version = temp[1]
     download_path = os.path.join(driver_mother_path, "chromedriver.zip")
@@ -65,11 +64,14 @@ def main():
     deal_txt.write_version(driver_mother_path, new_version)
 
 
-# os_name = check_os()
-local_ver = check_local_driver()
-print("chromebrowser_ver : {}".format(local_ver))
-local_ver_code = deal_reg.reg_version_code(local_ver)
 driver_mother_path = "./chromedriver/"
+
+if not os.path.isfile("./chromedriver/chromedriver.exe"):
+    os.rmdir("./chromedriver/")
+
+browser_ver = check_browser_ver()
+print("chromebrowser_ver : {}".format(browser_ver))
+browser_ver_code = deal_reg.reg_version_code(browser_ver)
 
 if __name__ == "__main__":
     # now = datetime.datetime.now()
