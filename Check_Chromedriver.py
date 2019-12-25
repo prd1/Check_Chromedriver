@@ -3,6 +3,7 @@ import re
 import zipfile
 from urllib import request
 import platform
+import datetime
 
 from bs4 import BeautifulSoup
 import requests
@@ -16,11 +17,17 @@ def check_os():
 
 def check_driver():
     try:
+        ver_path = "C:/Program Files (x86)/Google/Chrome/Application"
         read_ver = deal_txt.read_version(driver_mother_path)
-        if new_version != read_ver:
-            return False
-        return True
-    except Exception:
+        for i in os.listdir(ver_path):
+            local_ver = deal_reg.reg_dir(i)
+            re_read_ver = deal_reg.reg_dir(read_ver)
+            if local_ver == re_read_ver:
+                print("your_ver : {}".format(i))
+                print("latest_ver : {}".format(read_ver))
+                return True
+    except Exception as e:
+        print(e)
         return False
 
 
@@ -41,7 +48,7 @@ def main():
     print("Downloading...")
     request.urlretrieve(down_url, download_path)
     print("Download Complete!")
-    deal_zip.unzip(download_path)
+    deal_zip.unzip(driver_mother_path, download_path)
     deal_zip.remove_zip(download_path)
     deal_txt.write_version(driver_mother_path, new_version)
 
@@ -53,4 +60,6 @@ down_url = temp[0]
 new_version = temp[1]
 
 if __name__ == "__main__":
-    check_driver()
+    # check_driver()
+    main()
+

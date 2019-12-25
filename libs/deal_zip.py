@@ -1,4 +1,9 @@
-def unzip(download_path):
+import os
+
+import zipfile
+
+
+def unzip(driver_mother_path, download_path):
     try:
         with zipfile.ZipFile(download_path) as zf:
             zf.extractall(path=driver_mother_path)
