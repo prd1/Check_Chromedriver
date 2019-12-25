@@ -1,4 +1,5 @@
 import os
+import shutil
 import re
 import zipfile
 from urllib import request
@@ -65,9 +66,13 @@ def main():
 
 
 driver_mother_path = "./chromedriver/"
+driver_path = os.path.join(driver_mother_path, "chromedriver.exe")
 
-if not os.path.isfile("./chromedriver/chromedriver.exe"):
-    os.rmdir("./chromedriver/")
+try:
+    if not os.path.isfile(driver_path) or not os.path.isfile(os.path.join(driver_mother_path, "version.txt")) :
+        shutil.rmtree(driver_mother_path)
+except Exception:
+    pass
 
 browser_ver = check_browser_ver()
 print("chromebrowser_ver : {}".format(browser_ver))
