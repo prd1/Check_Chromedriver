@@ -15,8 +15,12 @@ except Exception:
     from Check_Chromedriver.libs import deal_parse, deal_reg, deal_zip, deal_txt
 
 
-def check_os():
-    return platform.system()
+def is_file_exists():
+    try:
+        if not os.path.isfile(driver_path):
+            shutil.rmtree(driver_mother_path)
+    except Exception:
+        pass
 
 
 def compare_driver():
@@ -49,16 +53,8 @@ def make_dir():
 
 
 def main():
-    driver_path = os.path.join(driver_mother_path, "chromedriver.exe")
-
-    try:
-        if not os.path.isfile(driver_path):
-            shutil.rmtree(driver_mother_path)
-    except Exception:
-        pass
-
+    is_file_exists()
     if compare_driver():
-        # print chromedriver version
         return
     make_dir()
     temp = deal_parse.parse_download_URL(browser_ver_code)
@@ -74,7 +70,7 @@ def main():
 
 
 driver_mother_path = "./chromedriver/"
-
+driver_path = os.path.join(driver_mother_path, "chromedriver.exe")
 browser_ver = check_browser_ver()
 print("chromebrowser_ver : {}".format(browser_ver))
 browser_ver_code = deal_reg.reg_version_code(browser_ver)
