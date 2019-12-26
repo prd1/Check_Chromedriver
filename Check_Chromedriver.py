@@ -36,7 +36,10 @@ def compare_driver():
 
 def check_browser_ver():
     try:
-        ver_path = "C:/Program Files (x86)/Google/Chrome/Application"
+        if platform.architecture()[0] == "64bit":
+            ver_path = "C:/Program Files (x86)/Google/Chrome/Application"
+        else:
+            ver_path = "C:/Program Files/Google/Chrome/Application"
         for i in os.listdir(ver_path):
             if deal_reg.is_version(i):
                 return i
