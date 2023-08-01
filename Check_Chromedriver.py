@@ -61,7 +61,7 @@ def main():
     if compare_driver():
         return
     make_dir()
-    temp = deal_parse.parse_download_URL(browser_ver_code)
+    temp = deal_parse.parse_download_URL2(browser_ver_code)
     down_url = temp[0]
     new_version = temp[1]
     download_path = os.path.join(driver_mother_path, "chromedriver.zip")

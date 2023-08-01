@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 
 try : 
     from libs import deal_reg
@@ -8,6 +9,7 @@ except Exception :
 
 
 BASE_URL = "https://chromedriver.chromium.org/downloads"
+BASE_URL2 = "https://googlechromelabs.github.io/chrome-for-testing/"
 
 
 def get_to_URL(url):
@@ -25,6 +27,32 @@ def parse_driver_version():
     atags = base_soup.select("a")
 
     return atags
+
+def parse_driver_version2():
+    reqs = requests.get(BASE_URL2)
+    soup = BeautifulSoup(reqs.text, 'html.parser')
+
+    tables = soup.find_all('table')
+
+    table_list = []
+    for table in tables:
+        df = pd.read_html(str(table))[0]
+        table_list.append(df)
+
+    # table_list now contains all tables from the website as pandas DataFrames.
+    df = pd.concat(table_list).query('Binary=="chromedriver" & Platform=="win64"')
+    df = df[df['HTTP status'] == 200]
+    df['version'] = [u.split('/')[-3] for u in df['URL'].values]
+    df['version_short'] = [u.split('.')[0] for u in df['version']]
+
+    return df
+
+def parse_download_URL2(local_browser_ver_code):
+    version_df = parse_driver_version2()
+    for version_code in version_df['version_short']:
+        if version_code==local_browser_ver_code:
+            download_url = version_df.query('version_short==@version_code')['URL'].iloc[0]
+            return download_url, version_code
 
 
 def parse_download_URL(local_browser_ver_code):
